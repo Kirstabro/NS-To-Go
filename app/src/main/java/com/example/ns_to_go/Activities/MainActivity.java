@@ -1,12 +1,16 @@
-package com.example.ns_to_go;
+package com.example.ns_to_go.Activities;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.ns_to_go.Adapters.SectionsPageAdapter;
-import com.google.android.material.tabs.TabLayout;
+import com.example.ns_to_go.Data.Database;
+import com.example.ns_to_go.R;
+import com.google.android.gms.common.data.DataBuffer;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -15,10 +19,13 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity {
 
-    private SectionsPageAdapter sectionsPageAdapter;
-    ViewPager viewPager;
+    Button NL;
+    Button ENG;
+    private Database database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,16 +36,47 @@ public class MainActivity extends AppCompatActivity {
             askPermission(Manifest.permission.ACCESS_FINE_LOCATION);
         }
 
-        this.sectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
-
-        viewPager = findViewById(R.id.viewPager);
-        setupViewPager(viewPager);
-
-        TabLayout tabLayout = findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
 
 
+        //region changeLanguage
+       NL = findViewById(R.id.NLBttn);
+       ENG = findViewById(R.id.ENGBttn);
 
+        NL.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Locale locale2 = new Locale("default");
+                Locale.setDefault(locale2);
+
+                Configuration config2 = new Configuration();
+                config2.locale = locale2;
+
+                getBaseContext().getResources().updateConfiguration(
+                        config2,getBaseContext().getResources().getDisplayMetrics());
+
+            }
+        });
+
+        ENG.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Locale locale2 = new Locale("en");
+                Locale.setDefault(locale2);
+
+                Configuration config2 = new Configuration();
+                config2.locale = locale2;
+
+                getBaseContext().getResources().updateConfiguration(
+                        config2,getBaseContext().getResources().getDisplayMetrics());
+
+            }
+        });
+
+        //endregion
     }
 
     public void askPermission(String permission) {
@@ -59,11 +97,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setupViewPager(ViewPager viewPager)
-    {
-        SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
-//        adapter.addFrament(new Fragment());
-        viewPager.setAdapter(adapter);
-    }
+
+
 
 }

@@ -1,4 +1,4 @@
-package com.example.ns_to_go;
+package com.example.ns_to_go.Data;
 
 import android.content.ContentValues;
 import android.content.Context;
