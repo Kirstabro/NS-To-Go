@@ -9,6 +9,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.ns_to_go.Data.Departure;
 import com.example.ns_to_go.Data.Station;
 import com.example.ns_to_go.Data.StationType;
 
@@ -81,8 +82,6 @@ public class NSAPIRequestHelper {
 
             );
 
-            stationsRequest.getHeaders();
-
             queue.add(stationsRequest);
         } catch(Exception e){
 
@@ -90,7 +89,55 @@ public class NSAPIRequestHelper {
 
     }
 
-    public void getDepartures(){
+    public void getDepartures(Station station){
+        String url = baseUrl + "departures?maxJourneys=25&lang=nl&uicCode=" + station.getUICCODE();
+
+        try{
+
+            NSAPIJsonObjectRequest departuresRequest = new NSAPIJsonObjectRequest(
+                    Request.Method.GET,
+                    url,
+                    null,
+                    (response) ->{
+                        try {
+                            JSONObject payload = response.getJSONObject("payload");
+
+                            JSONArray departures = payload.getJSONArray("departures");
+
+                            for(int i = 0; i < departures.length(); i++){
+                                JSONObject departure = departures.getJSONObject(i);
+
+                                String direction = departure.getString("direction");
+                                String plannedTime = departure.getString("plannedDateTime");
+                                String actualTime = departure.getString("actualDateTime");
+                                String plannedTrack = departure.getString("plannedTrack");
+                                boolean cancelled = departure.getBoolean("cancelled");
+                                String trainType = departure.getJSONObject("product").getString("longCategoryName");
+                                ArrayList<String> routeStations = new ArrayList<>();
+                                JSONArray routeStations1 = departure.getJSONArray("routeStations");
+                                for(int j = 0 ; i < routeStations1.length(); j++){
+                                    JSONObject routeStation = routeStations1.getJSONObject(j);
+                                    routeStations.add(routeStation.getString("mediumName"));
+                                }
+
+                                Departure departure1 = new Departure(direction, plannedTime, actualTime, plannedTrack, cancelled, trainType, routeStations);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    },
+                    (error) -> {
+
+                    }
+            );
+
+
+            queue.add(departuresRequest);
+        } catch (Exception e){
+
+        }
+
 
     }
 
