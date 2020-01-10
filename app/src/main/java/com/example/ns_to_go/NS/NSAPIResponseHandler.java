@@ -8,5 +8,5 @@ import java.util.ArrayList;
 public interface NSAPIResponseHandler {
     void stationsReceived(ArrayList<Station> station);
     void departuresReceived(ArrayList<Departure> departure);
-    void onError();
+    void onError(String message);
 }

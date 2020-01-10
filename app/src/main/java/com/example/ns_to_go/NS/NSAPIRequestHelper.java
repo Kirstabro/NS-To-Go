@@ -1,7 +1,9 @@
 package com.example.ns_to_go.NS;
 
 import android.content.Context;
+import android.util.Log;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -15,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class NSAPIRequestHelper {
 
@@ -73,12 +76,21 @@ public class NSAPIRequestHelper {
                         }
                     },
                     (error) ->{
-                        responseHandler.onError();
+                        responseHandler.onError("" + error.getNetworkTimeMs());
                     }
+
             );
+
+            stationsRequest.getHeaders();
+
+            queue.add(stationsRequest);
         } catch(Exception e){
 
         }
+
+    }
+
+    public void getDepartures(){
 
     }
 

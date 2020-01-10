@@ -1,5 +1,7 @@
 package com.example.ns_to_go.NS;
 
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 
 import com.android.volley.AuthFailureError;
@@ -17,7 +19,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NSAPIJsonObjectRequest extends JsonRequest<JSONObject> {
+public class NSAPIJsonObjectRequest extends JsonRequest {
     public NSAPIJsonObjectRequest(int method, String url, @Nullable String requestBody, Response.Listener<JSONObject> listener, @Nullable Response.ErrorListener errorListener) {
         super(method, url, requestBody, listener, errorListener);
     }
@@ -30,14 +32,16 @@ public class NSAPIJsonObjectRequest extends JsonRequest<JSONObject> {
     }
 
     @Override
-    protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+    protected Response parseNetworkResponse(NetworkResponse response) {
         Response parsingResult;
         try {
             String responseInText = new String(response.data,
                     HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
-            JSONArray returnArray = new JSONArray(responseInText);
-            parsingResult = Response.success(returnArray, HttpHeaderParser.parseCacheHeaders(response));
+            Log.d("INCOMING TEXT", responseInText);
+            JSONObject returnObject = new JSONObject(responseInText);
+            parsingResult = Response.success(returnObject, HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException | JSONException e) {
+
             parsingResult = Response.error(new VolleyError("Returned info is not a JsonObject"));
         }
         return parsingResult;

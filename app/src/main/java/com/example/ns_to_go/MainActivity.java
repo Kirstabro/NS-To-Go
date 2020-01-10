@@ -1,14 +1,19 @@
-package com.example.ns_to_go.Activities;
+package com.example.ns_to_go;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.ns_to_go.Data.Database;
+import com.example.ns_to_go.Data.Departure;
+import com.example.ns_to_go.Data.Station;
+import com.example.ns_to_go.NS.NSAPIRequestHelper;
+import com.example.ns_to_go.NS.NSAPIResponseHandler;
 import com.example.ns_to_go.R;
 import com.google.android.gms.common.data.DataBuffer;
 
@@ -19,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -77,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //endregion
+
+
     }
 
     public void askPermission(String permission) {
