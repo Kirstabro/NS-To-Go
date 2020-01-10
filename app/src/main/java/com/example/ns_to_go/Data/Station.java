@@ -1,5 +1,7 @@
 package com.example.ns_to_go.Data;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class Station
 {
 
@@ -103,6 +105,10 @@ public class Station
     public void setUICCODE(String UICCODE)
     {
         this.UICCODE = UICCODE;
+    }
+
+    public LatLng getLatLng(){
+        return new LatLng(lat, lng);
     }
     //endregion
 }
