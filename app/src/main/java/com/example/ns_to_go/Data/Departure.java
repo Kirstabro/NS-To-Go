@@ -1,6 +1,8 @@
 package com.example.ns_to_go.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
@@ -16,8 +18,8 @@ public class Departure {
 
     public Departure(String direction, String plannedTime, String actualTime, String plannedTrack, boolean cancelled, String trainType, ArrayList<String> routeStations){
         this.direction = direction;
-        this.plannedTime = LocalDateTime.parse(plannedTime, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        this.actualTime = LocalDateTime.parse(actualTime, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        this.plannedTime = getLocalDatTimeFromString(plannedTime);
+        this.actualTime = getLocalDatTimeFromString(actualTime);
         this.plannedTrack = plannedTrack;
         this.cancelled = cancelled;
         this.trainType = trainType;
@@ -32,6 +34,17 @@ public class Departure {
         this.cancelled = cancelled;
         this.trainType = trainType;
         this.routeStations = routeStations;
+    }
+
+    public LocalDateTime getLocalDatTimeFromString(String localDateTime){
+        int year = Integer.parseInt(localDateTime.substring(0,4));
+        int month = Integer.parseInt(localDateTime.substring(5,7));
+        int day = Integer.parseInt(localDateTime.substring(8,10));
+        LocalDate localDate = LocalDate.of(year, month, day);
+        int hour = Integer.parseInt(localDateTime.substring(11, 13));
+        int minute = Integer.parseInt(localDateTime.substring(14,16));
+        LocalTime localTime = LocalTime.of(hour, minute);
+        return LocalDateTime.of(localDate, localTime);
     }
 
     //region getters & setters

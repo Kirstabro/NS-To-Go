@@ -91,7 +91,7 @@ public class NSAPIRequestHelper {
 
     public void getDepartures(Station station){
         String url = baseUrl + "departures?maxJourneys=25&lang=nl&uicCode=" + station.getUICCODE();
-
+        ArrayList<Departure> departuresList = new ArrayList<>();
         try{
 
             NSAPIJsonObjectRequest departuresRequest = new NSAPIJsonObjectRequest(
@@ -120,15 +120,71 @@ public class NSAPIRequestHelper {
                                     routeStations.add(routeStation.getString("mediumName"));
                                 }
 
-                                Departure departure1 = new Departure(direction, plannedTime, actualTime, plannedTrack, cancelled, trainType, routeStations);
+                                departuresList.add(new Departure(direction, plannedTime, actualTime, plannedTrack, cancelled, trainType, routeStations));
+
                             }
 
+                            responseHandler.departuresReceived(departuresList);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     },
                     (error) -> {
+                        responseHandler.onError(error.getMessage());
+                    }
+            );
 
+
+            queue.add(departuresRequest);
+        } catch (Exception e){
+
+        }
+
+
+    }
+
+    public void getDepartures(String uicCode){
+        String url = baseUrl + "departures?maxJourneys=25&lang=nl&uicCode=" + uicCode;
+        ArrayList<Departure> departuresList = new ArrayList<>();
+        try{
+
+            NSAPIJsonObjectRequest departuresRequest = new NSAPIJsonObjectRequest(
+                    Request.Method.GET,
+                    url,
+                    null,
+                    (response) ->{
+                        try {
+                            JSONObject payload = response.getJSONObject("payload");
+
+                            JSONArray departures = payload.getJSONArray("departures");
+
+                            for(int i = 0; i < departures.length(); i++){
+                                JSONObject departure = departures.getJSONObject(i);
+
+                                String direction = departure.getString("direction");
+                                String plannedTime = departure.getString("plannedDateTime");
+                                String actualTime = departure.getString("actualDateTime");
+                                String plannedTrack = departure.getString("plannedTrack");
+                                boolean cancelled = departure.getBoolean("cancelled");
+                                String trainType = departure.getJSONObject("product").getString("longCategoryName");
+                                ArrayList<String> routeStations = new ArrayList<>();
+                                JSONArray routeStations1 = departure.getJSONArray("routeStations");
+                                for(int j = 0 ; j < routeStations1.length(); j++){
+                                    JSONObject routeStation = routeStations1.getJSONObject(j);
+                                    routeStations.add(routeStation.getString("mediumName"));
+                                }
+
+                                departuresList.add(new Departure(direction, plannedTime, actualTime, plannedTrack, cancelled, trainType, routeStations));
+
+                            }
+
+                            responseHandler.departuresReceived(departuresList);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    },
+                    (error) -> {
+                        responseHandler.onError(error.getMessage());
                     }
             );
 
