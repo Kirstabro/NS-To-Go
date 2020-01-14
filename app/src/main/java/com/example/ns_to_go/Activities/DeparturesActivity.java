@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import com.example.ns_to_go.Adapters.DeparturesAdapter;
 import com.example.ns_to_go.Data.Departure;
@@ -23,6 +25,9 @@ public class DeparturesActivity extends AppCompatActivity implements NSAPIDepart
     private RecyclerView.LayoutManager layoutManager;
 
     private ArrayList<Departure> departures;
+    private Station selectedStation;
+
+    Button refresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -33,8 +38,10 @@ public class DeparturesActivity extends AppCompatActivity implements NSAPIDepart
         recyclerView = findViewById(R.id.recyclerview);
         departures = new ArrayList<>();
 
+        selectedStation = (Station)getIntent().getSerializableExtra("STATION");
+
         NSAPIDeparturesRequestHelper requestHelper = new NSAPIDeparturesRequestHelper(this,this);
-        requestHelper.getDepartures((Station)getIntent().getSerializableExtra("STATION"));
+        requestHelper.getDepartures(selectedStation);
 
         adapter = new DeparturesAdapter(departures);
 
@@ -43,13 +50,22 @@ public class DeparturesActivity extends AppCompatActivity implements NSAPIDepart
 
         recyclerView.setAdapter(adapter);
 
+        refresh = findViewById(R.id.refreshBttn);
+        refresh.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                requestHelper.getDepartures(selectedStation);
+            }
+        });
+
     }
 
     @Override
     public void departuresReceived(ArrayList<Departure> departure)
     {
         departures = departure;
-
         adapter.notifyDataSetChanged();
     }
 
