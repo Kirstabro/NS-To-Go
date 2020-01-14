@@ -80,8 +80,8 @@ public class Database extends SQLiteOpenHelper implements Serializable {
         values.put(COLUMN_MIDDLE_NAME, station.getNames()[1]);
         values.put(COLUMN_LONG_NAME, station.getNames()[2]);
         values.put(COLUMN_CODE, station.getCode());
-        values.put(COLUMN_LATITUDE, station.getCode());
-        values.put(COLUMN_LONGITUDE, station.getCode());
+        values.put(COLUMN_LATITUDE, station.getLat());
+        values.put(COLUMN_LONGITUDE, station.getLng());
         values.put(COLUMN_LAND, station.getLand());
         values.put(COLUMN_STATIONTYPE, station.getStationType().toString());
 
