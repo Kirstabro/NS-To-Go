@@ -65,8 +65,13 @@ public class DeparturesActivity extends AppCompatActivity implements NSAPIDepart
     @Override
     public void departuresReceived(ArrayList<Departure> departure)
     {
-        departures = departure;
-        adapter.notifyDataSetChanged();
+        departures.clear();
+
+        for(Departure d : departure)
+        {
+            this.departures.add(d);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
