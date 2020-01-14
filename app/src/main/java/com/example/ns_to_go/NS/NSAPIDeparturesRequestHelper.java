@@ -1,6 +1,7 @@
 package com.example.ns_to_go.NS;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -63,7 +64,7 @@ public class NSAPIDeparturesRequestHelper {
                                 String trainType = departure.getJSONObject("product").getString("longCategoryName");
                                 ArrayList<String> routeStations = new ArrayList<>();
                                 JSONArray routeStations1 = departure.getJSONArray("routeStations");
-                                for(int j = 0 ; i < routeStations1.length(); j++){
+                                for(int j = 0 ; j < routeStations1.length(); j++){
                                     JSONObject routeStation = routeStations1.getJSONObject(j);
                                     routeStations.add(routeStation.getString("mediumName"));
                                 }
@@ -84,6 +85,7 @@ public class NSAPIDeparturesRequestHelper {
 
 
             queue.add(departuresRequest);
+            Log.d("DEPARTURES REQUESTED", "RERUEST MADE");
         } catch (Exception e){
 
         }
