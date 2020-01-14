@@ -5,13 +5,18 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+<<<<<<< HEAD:app/src/main/java/com/example/ns_to_go/Activities/MainActivity.java
+=======
+>>>>>>> master:app/src/main/java/com/example/ns_to_go/MainActivity.java
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.ns_to_go.Data.Database;
+<<<<<<< HEAD:app/src/main/java/com/example/ns_to_go/Activities/MainActivity.java
 import com.example.ns_to_go.Data.Station;
+=======
+>>>>>>> master:app/src/main/java/com/example/ns_to_go/MainActivity.java
 import com.example.ns_to_go.R;
 
 import androidx.annotation.NonNull;
@@ -29,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private Database database;
     private Station selectedStation;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
         {
             //TODO: Fill database with Stations
         }
+
+
 
         //region changeLanguage
         NL = findViewById(R.id.NLBttn);
@@ -85,7 +94,10 @@ public class MainActivity extends AppCompatActivity {
         //endregion
 
 
+<<<<<<< HEAD:app/src/main/java/com/example/ns_to_go/Activities/MainActivity.java
 
+=======
+>>>>>>> master:app/src/main/java/com/example/ns_to_go/MainActivity.java
     }
 
     public void askPermission(String permission) {
