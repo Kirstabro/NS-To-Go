@@ -128,6 +128,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             setNearestStation();
             setNearestStationMarker();
+            setAllStationMarkers();
             directionApiManager.generateDirections((latLng), new LatLng(nearestStation.getLat(), nearestStation.getLng()));
 
         }
@@ -177,5 +178,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .title(nearestStation.getNames()[2]));
 
 
+    }
+
+    public void setAllStationMarkers()
+    {
+        ArrayList<Station> stations;
+        stations = database.readValues();
+
+        for (Station s : stations)
+        {
+            mMap.addMarker(new MarkerOptions()
+                    .position(s.getLatLng())
+                    .title(s.getNames()[2]));
+        }
     }
 }
