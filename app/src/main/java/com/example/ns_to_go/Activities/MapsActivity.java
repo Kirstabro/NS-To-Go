@@ -66,10 +66,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         directionApiManager = new DirectionApiManager(this, this);
         locationTracker = new LocationTracker(this, this, (LocationManager) getSystemService(Context.LOCATION_SERVICE), this.notifications);
 
-        database = (Database) getIntent().getSerializableExtra("DATABASE");
+        this.database = (Database) getIntent().getSerializableExtra("DATABASE");
 
-        nearestStation = new Station();
-        setNearestStation();
 
 
 
@@ -91,6 +89,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.getUiSettings().setMapToolbarEnabled(false);
         mMap.setOnMarkerClickListener(this);
 
+        setNearestStation();
         setNearestStationMarker();
 
 

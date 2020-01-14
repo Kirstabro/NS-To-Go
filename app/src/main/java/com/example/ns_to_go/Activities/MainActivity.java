@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements NSAPIStationsResp
     Button ENG;
     Button start;
     private Database database;
-    private ArrayList<Station> stations = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +50,9 @@ public class MainActivity extends AppCompatActivity implements NSAPIStationsResp
 
         if (! database.isTableFilled())
         {
-            NSAPIStationsRequestHelper.getInstance(this, this).getStations();
-            start.setEnabled(false);
+            NSAPIStationsRequestHelper requestHelper = new NSAPIStationsRequestHelper(this,this);
+            requestHelper.getStations();
+
         } else {
             start.setEnabled(true);
         }

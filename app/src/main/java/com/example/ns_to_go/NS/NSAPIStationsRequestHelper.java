@@ -1,6 +1,7 @@
 package com.example.ns_to_go.NS;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -78,6 +79,7 @@ public class NSAPIStationsRequestHelper {
             );
 
             queue.add(stationsRequest);
+            Log.d("Make request", "Stations");
         } catch(Exception e){
 
         }

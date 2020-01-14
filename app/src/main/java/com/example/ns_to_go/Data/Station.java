@@ -2,7 +2,6 @@ package com.example.ns_to_go.Data;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import java.io.NotSerializableException;
 import java.io.Serializable;
 
 public class Station implements Serializable
