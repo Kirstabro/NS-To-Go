@@ -11,10 +11,11 @@ import com.example.ns_to_go.Data.Station;
 import com.example.ns_to_go.Data.StationType;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.Serializable;
 import java.sql.Blob;
 import java.util.ArrayList;
 
-public class Database extends SQLiteOpenHelper {
+public class Database extends SQLiteOpenHelper implements Serializable {
 
     private static final String TAG = "MetingManager";
 
@@ -69,7 +70,7 @@ public class Database extends SQLiteOpenHelper {
     }
 
     public void insertValue(Station station) {
-        getWritableDatabase().delete(TABLE_NAME, "sequenceID=?", new String[]{station.getUICCODE() + ""});
+        getWritableDatabase().delete(TABLE_NAME, "uiccode=?", new String[]{station.getUICCODE() + ""});
 
         ContentValues values = new ContentValues();
 

@@ -14,6 +14,7 @@ import com.example.ns_to_go.Data.Database;
 import com.example.ns_to_go.Data.Departure;
 import com.example.ns_to_go.Data.Station;
 
+import com.example.ns_to_go.NS.NSAPIStationsRequestHelper;
 import com.example.ns_to_go.NS.NSAPIStationsResponseHandler;
 import com.example.ns_to_go.R;
 
@@ -31,21 +32,30 @@ public class MainActivity extends AppCompatActivity implements NSAPIStationsResp
 
     Button NL;
     Button ENG;
+    Button start;
     private Database database;
     private ArrayList<Station> stations = new ArrayList<>();
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        start = findViewById(R.id.StartBttn);
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             askPermission(Manifest.permission.ACCESS_FINE_LOCATION);
         }
 
         database = new Database(this);
+
+        if (! database.isTableFilled())
+        {
+            NSAPIStationsRequestHelper.getInstance(this, this).getStations();
+            start.setEnabled(false);
+        } else {
+            start.setEnabled(true);
+        }
 
         //region changeLanguage
         NL = findViewById(R.id.NLBttn);
@@ -109,20 +119,23 @@ public class MainActivity extends AppCompatActivity implements NSAPIStationsResp
 
     public void openMap(View view)
     {
-        startActivity(new Intent(this, MapsActivity.class));
+        Intent intent = new Intent(this, MapsActivity.class);
+        intent.putExtra("DATABASE", database);
+        startActivity(intent);
     }
 
 
     @Override
     public void stationsReceived(ArrayList<Station> station)
     {
-        if (!database.isTableFilled())
+        database.resetTable();
+        for(Station s : station)
         {
-            for(Station s : stations)
-            {
-                database.insertValue(s);
-            }
+            database.insertValue(s);
         }
+
+        start.setEnabled(true);
+
     }
 
 

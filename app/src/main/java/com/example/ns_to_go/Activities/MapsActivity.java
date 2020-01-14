@@ -66,7 +66,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         directionApiManager = new DirectionApiManager(this, this);
         locationTracker = new LocationTracker(this, this, (LocationManager) getSystemService(Context.LOCATION_SERVICE), this.notifications);
 
-        database = new Database(this);
+        database = (Database) getIntent().getSerializableExtra("DATABASE");
 
         nearestStation = new Station();
         setNearestStation();
@@ -153,24 +153,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void setNearestStation()
     {
-        ArrayList<Station> stations = new ArrayList<>();
+        ArrayList<Station> stations;
         stations = database.readValues();
-
+        float[] results = new float[3];
+        Station closestStation = null;
+        float closestAmountOfMeters = Float.MAX_VALUE;
         for(Station s : stations)
         {
+            Location.distanceBetween(userLocation.getPosition().latitude, userLocation.getPosition().longitude, s.getLat(), s.getLng(), results);
 
+            if (results[0] < closestAmountOfMeters){
+                closestAmountOfMeters = results[0];
+                closestStation = s;
+            }
         }
 
+
         //TODO: Check which station is the nearest
-        nearestStation.setLat(51.595);
-        nearestStation.setLng(4.78);
+        nearestStation = closestStation;
     }
 
     public void setNearestStationMarker()
     {
         mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(51.595, 4.78))
-                .title("station"));
+                .position(nearestStation.getLatLng())
+                .title(nearestStation.getNames()[2]));
 
 
     }
