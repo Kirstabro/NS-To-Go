@@ -11,8 +11,10 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.ns_to_go.Data.Database;
+import com.example.ns_to_go.Data.Departure;
 import com.example.ns_to_go.Data.Station;
 
+import com.example.ns_to_go.NS.NSAPIStationsResponseHandler;
 import com.example.ns_to_go.R;
 
 import androidx.annotation.NonNull;
@@ -21,14 +23,16 @@ import androidx.core.content.ContextCompat;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NSAPIStationsResponseHandler
+{
 
     Button NL;
     Button ENG;
     private Database database;
-    private Station selectedStation;
+    private ArrayList<Station> stations = new ArrayList<>();
 
 
 
@@ -42,12 +46,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         database = new Database(this);
-        if (!database.isTableFilled())
-        {
-            //TODO: Fill database with Stations
-        }
-
-
 
         //region changeLanguage
         NL = findViewById(R.id.NLBttn);
@@ -115,6 +113,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void stationsReceived(ArrayList<Station> station)
+    {
+        if (!database.isTableFilled())
+        {
+            for(Station s : stations)
+            {
+                database.insertValue(s);
+            }
+        }
+    }
 
 
+    @Override
+    public void onError(String message)
+    {
+
+    }
 }

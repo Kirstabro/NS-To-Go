@@ -48,7 +48,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private LocationTracker locationTracker;
 
-    private ArrayList<Marker> markers;
     private Notifications notifications;
 
     private Station nearestStation;
@@ -64,7 +63,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         notifications = new Notifications(this);
-        markers = new ArrayList<>();
         directionApiManager = new DirectionApiManager(this, this);
         locationTracker = new LocationTracker(this, this, (LocationManager) getSystemService(Context.LOCATION_SERVICE), this.notifications);
 
@@ -155,6 +153,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void setNearestStation()
     {
+        ArrayList<Station> stations = new ArrayList<>();
+        stations = database.readValues();
+
+        for(Station s : stations)
+        {
+
+        }
+
         //TODO: Check which station is the nearest
         nearestStation.setLat(51.595);
         nearestStation.setLng(4.78);
