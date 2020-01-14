@@ -1,5 +1,7 @@
 package com.example.ns_to_go.Data;
 
+import androidx.annotation.NonNull;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -34,6 +36,19 @@ public class Departure {
         this.cancelled = cancelled;
         this.trainType = trainType;
         this.routeStations = routeStations;
+    }
+
+    @NonNull
+    @Override
+    public String toString()
+    {
+        String names = "";
+        for(String s : routeStations)
+        {
+            names += (", " + s);
+        }
+
+        return names;
     }
 
     public LocalDateTime getLocalDatTimeFromString(String localDateTime){

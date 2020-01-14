@@ -4,12 +4,15 @@ import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ns_to_go.Data.Departure;
 import com.example.ns_to_go.R;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -36,7 +39,10 @@ public class DeparturesAdapter extends RecyclerView.Adapter<DeparturesAdapter.Im
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position)
     {
-
+        Departure departure = dataset.get(position);
+        holder.destination.setText(departure.getDirection());
+        holder.time.setText(departure.getPlannedTrack());
+        holder.stations.setText(departure.getRouteStations().toString());
     }
 
     @Override
@@ -47,9 +53,19 @@ public class DeparturesAdapter extends RecyclerView.Adapter<DeparturesAdapter.Im
 
     public class ImageViewHolder extends RecyclerView.ViewHolder
     {
+
+        TextView destination;
+        TextView time;
+        TextView stations;
+
         public ImageViewHolder(@NonNull View itemView)
         {
             super(itemView);
+
+            destination = itemView.findViewById(R.id.destinationText);
+            time = itemView.findViewById(R.id.timesText);
+            stations = itemView.findViewById(R.id.stationsText);
+
         }
     }
 }
