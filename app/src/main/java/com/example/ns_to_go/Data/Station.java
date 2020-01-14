@@ -2,7 +2,10 @@ package com.example.ns_to_go.Data;
 
 import com.google.android.gms.maps.model.LatLng;
 
-public class Station
+import java.io.NotSerializableException;
+import java.io.Serializable;
+
+public class Station implements Serializable
 {
 
     private StationType stationType;
@@ -24,6 +27,10 @@ public class Station
         this.code = code;
         this.EVACode = EVACode;
         this.UICCODE = UICCODE;
+    }
+
+    public Station()
+    {
     }
 
     //region getters and setters

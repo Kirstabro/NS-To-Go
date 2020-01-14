@@ -1,22 +1,23 @@
 package com.example.ns_to_go.Activities;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.ns_to_go.Data.Database;
+import com.example.ns_to_go.Data.Station;
 import com.example.ns_to_go.R;
-import com.google.android.gms.common.data.DataBuffer;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Locale;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     Button NL;
     Button ENG;
     private Database database;
+    private Station selectedStation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +38,11 @@ public class MainActivity extends AppCompatActivity {
             askPermission(Manifest.permission.ACCESS_FINE_LOCATION);
         }
 
-
+        database = new Database(this);
+        if (!database.isTableFilled())
+        {
+            //TODO: Fill database with Stations
+        }
 
         //region changeLanguage
         NL = findViewById(R.id.NLBttn);
@@ -77,6 +83,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //endregion
+
+
+
     }
 
     public void askPermission(String permission) {
@@ -95,6 +104,11 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Location permission not accepted.", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    public void openMap(View view)
+    {
+        startActivity(new Intent(this, MapsActivity.class));
     }
 
 
