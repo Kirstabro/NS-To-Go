@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,10 +67,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         directionApiManager = new DirectionApiManager(this, this);
         locationTracker = new LocationTracker(this, this, (LocationManager) getSystemService(Context.LOCATION_SERVICE), this.notifications);
 
-        this.database = (Database) getIntent().getSerializableExtra("DATABASE");
-
-
-
+        this.database = new Database(this);
 
     }
 
@@ -88,10 +86,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap.getUiSettings().setMapToolbarEnabled(false);
         mMap.setOnMarkerClickListener(this);
-
-        setNearestStation();
-        setNearestStationMarker();
-
 
     }
 
@@ -132,11 +126,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .build();
 
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
+            setNearestStation();
+            setNearestStationMarker();
             directionApiManager.generateDirections((latLng), new LatLng(nearestStation.getLat(), nearestStation.getLng()));
 
         }
         userLocation.setPosition(latLng);
+
     }
 
     public void centerCamera(View view) {
@@ -170,6 +166,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //TODO: Check which station is the nearest
         nearestStation = closestStation;
+        Log.d("CLOSEST STATION", nearestStation.getNames()[2]);
+        Log.d("CLOSEST STATION", "lat: " + nearestStation.getLat() + ", lng: " + nearestStation.getLng());
     }
 
     public void setNearestStationMarker()
