@@ -43,7 +43,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
 
     private DirectionApiManager directionApiManager;
-    private Marker userLocation;
+    private LatLng userLocation;
 
     private Database database;
 
@@ -84,6 +84,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMapToolbarEnabled(false);
         mMap.setOnMarkerClickListener(this);
 
@@ -116,9 +117,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onLocationChanged(Location location) {
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         if (userLocation == null) {
-            userLocation = mMap.addMarker(new MarkerOptions()
-                    .position(latLng)
-                    .title("User"));
+            userLocation = latLng;
 
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(latLng)
@@ -132,7 +131,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             directionApiManager.generateDirections((latLng), new LatLng(nearestStation.getLat(), nearestStation.getLng()));
 
         }
-        userLocation.setPosition(latLng);
+        userLocation = latLng;
 
     }
 
@@ -140,7 +139,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (userLocation == null)
             return;
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(userLocation.getPosition())
+                .target(userLocation)
                 .zoom(15)
                 .build();
 
@@ -156,7 +155,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         float closestAmountOfMeters = Float.MAX_VALUE;
         for(Station s : stations)
         {
-            Location.distanceBetween(userLocation.getPosition().latitude, userLocation.getPosition().longitude, s.getLat(), s.getLng(), results);
+            Location.distanceBetween(userLocation.latitude, userLocation.longitude, s.getLat(), s.getLng(), results);
 
             if (results[0] < closestAmountOfMeters){
                 closestAmountOfMeters = results[0];
