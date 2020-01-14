@@ -41,7 +41,7 @@ public class DeparturesAdapter extends RecyclerView.Adapter<DeparturesAdapter.Im
     {
         Departure departure = dataset.get(position);
         holder.destination.setText(departure.getDirection());
-        holder.time.setText(departure.getPlannedTrack());
+        holder.time.setText(departure.getPlannedTime().toString());
         holder.stations.setText(departure.getRouteStations().toString());
     }
 

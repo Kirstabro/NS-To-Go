@@ -39,7 +39,7 @@ public class NSAPIDeparturesRequestHelper {
     }
 
         public void getDepartures(Station station){
-        String url = baseUrl + "departures?maxJourneys=25&lang=nl&uicCode=" + station.getUICCODE();
+        String url = baseUrl + "departures?maxJourneys=50&lang=nl&uicCode=" + station.getUICCODE();
         ArrayList<Departure> departuresList = new ArrayList<>();
         try{
 
