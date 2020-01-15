@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ns_to_go.Data.Database;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements NSAPIStationsResp
     Button ENG;
     Button start;
     private Database database;
+    TextView message;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements NSAPIStationsResp
         setContentView(R.layout.activity_main);
 
         start = findViewById(R.id.StartBttn);
+        message = findViewById(R.id.messageText);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             askPermission(Manifest.permission.ACCESS_FINE_LOCATION);
@@ -75,7 +78,10 @@ public class MainActivity extends AppCompatActivity implements NSAPIStationsResp
                 getBaseContext().getResources().updateConfiguration(
                         config2,getBaseContext().getResources().getDisplayMetrics());
 
+                message.setText(R.string.message_main);
             }
+
+
         });
 
         ENG.setOnClickListener(new View.OnClickListener()
@@ -91,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements NSAPIStationsResp
 
                 getBaseContext().getResources().updateConfiguration(
                         config2,getBaseContext().getResources().getDisplayMetrics());
-
+                message.setText(R.string.message_main);
             }
         });
 

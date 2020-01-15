@@ -3,4 +3,8 @@
     <string name="app_name">NS-To-GO</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
+    <string name="message_main">"Are you lost and looking to get out of here ? Click here !"</string>
+    <string name="departures">"Departures:</string>
+
+
 </resources>

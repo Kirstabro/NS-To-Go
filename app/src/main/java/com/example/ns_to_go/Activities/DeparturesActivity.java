@@ -3,10 +3,13 @@ package com.example.ns_to_go.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.ns_to_go.Adapters.DeparturesAdapter;
 import com.example.ns_to_go.Data.Departure;
@@ -27,7 +30,8 @@ public class DeparturesActivity extends AppCompatActivity implements NSAPIDepart
     private ArrayList<Departure> departures;
     private Station selectedStation;
 
-    Button refresh;
+    SwipeRefreshLayout refreshLayout;
+    TextView message;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -38,7 +42,12 @@ public class DeparturesActivity extends AppCompatActivity implements NSAPIDepart
         recyclerView = findViewById(R.id.recyclerview);
         departures = new ArrayList<>();
 
+        message = findViewById(R.id.departuresTextView);
+        message.setText(R.string.departures);
+
         selectedStation = (Station)getIntent().getSerializableExtra("STATION");
+
+        setTitle(selectedStation.getNames()[2]);
 
         NSAPIDeparturesRequestHelper requestHelper = new NSAPIDeparturesRequestHelper(this,this);
         requestHelper.getDepartures(selectedStation);
@@ -50,13 +59,19 @@ public class DeparturesActivity extends AppCompatActivity implements NSAPIDepart
 
         recyclerView.setAdapter(adapter);
 
-        refresh = findViewById(R.id.refreshBttn);
-        refresh.setOnClickListener(new View.OnClickListener()
-        {
+        refreshLayout = findViewById(R.id.refresh);
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onRefresh() {
                 requestHelper.getDepartures(selectedStation);
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshLayout.setRefreshing(false);
+                    }
+                }, 1000);
             }
         });
 

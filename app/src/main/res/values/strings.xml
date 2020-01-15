@@ -2,5 +2,8 @@
     <string name="app_name">NS-To-GO</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_maps" translatable="false">Map</string>
+    <string name="message_main">"Ben je verdwaald en wil je hier zo snel mogelijk weg ? Klik hier !"</string>
+    <string name="departures">"Vertrek:</string>
+
 </resources>

@@ -47,7 +47,7 @@ public class DeparturesAdapter extends RecyclerView.Adapter<DeparturesAdapter.Im
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position)
     {
         Departure departure = dataset.get(position);
-        holder.track.setText("Spoor: " + departure.getPlannedTrack());
+        holder.track.setText(departure.getPlannedTrack());
         holder.destination.setText(departure.getDirection());
         holder.typeOfTrain.setText(departure.getTrainType());
 

@@ -1,7 +1,6 @@
 package com.example.ns_to_go.Location;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -12,14 +11,10 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import com.example.ns_to_go.Notifications;
 
 public class LocationTracker extends Service implements ActivityCompat.OnRequestPermissionsResultCallback {
 
@@ -31,7 +26,7 @@ public class LocationTracker extends Service implements ActivityCompat.OnRequest
     private static final String PERMISSION_STRING = Manifest.permission.ACCESS_FINE_LOCATION;
 
 
-    public LocationTracker(Context context, LocationTrackerListener listener, LocationManager locationManager, Notifications notifications) {
+    public LocationTracker(Context context, LocationTrackerListener listener, LocationManager locationManager) {
         this.context = context;
         this.listener = listener;
         this.locationManager = locationManager;

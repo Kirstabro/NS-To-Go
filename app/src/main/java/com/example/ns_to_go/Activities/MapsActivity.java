@@ -6,10 +6,8 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.PopupMenu;
+import android.widget.StackView;
 import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
@@ -20,9 +18,7 @@ import com.example.ns_to_go.Location.DirectionApiListener;
 import com.example.ns_to_go.Location.DirectionApiManager;
 import com.example.ns_to_go.Location.LocationTracker;
 import com.example.ns_to_go.Location.LocationTrackerListener;
-import com.example.ns_to_go.Notifications;
 import com.example.ns_to_go.R;
-import com.google.android.gms.common.data.DataBuffer;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -34,8 +30,7 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.material.snackbar.Snackbar;
-import java.util.Calendar;
+
 import java.util.ArrayList;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, DirectionApiListener, LocationTrackerListener,  GoogleMap.OnMarkerClickListener {
@@ -49,8 +44,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private LocationTracker locationTracker;
 
-    private Notifications notifications;
-
     private Station nearestStation;
 
 
@@ -63,9 +56,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        notifications = new Notifications(this);
         directionApiManager = new DirectionApiManager(this, this);
-        locationTracker = new LocationTracker(this, this, (LocationManager) getSystemService(Context.LOCATION_SERVICE), this.notifications);
+        locationTracker = new LocationTracker(this, this, (LocationManager) getSystemService(Context.LOCATION_SERVICE));
 
         this.database = new Database(this);
 
@@ -96,7 +88,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (! marker.equals(userLocation))
         {
             Intent intent = new Intent(this, DeparturesActivity.class);
-            intent.putExtra("STATION", nearestStation);
+            intent.putExtra("STATION", (Station)marker.getTag());
             startActivity(intent);
         }
             return false;
@@ -127,6 +119,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             setNearestStation();
             setNearestStationMarker();
+
             setAllStationMarkers();
             directionApiManager.generateDirections((latLng), new LatLng(nearestStation.getLat(), nearestStation.getLng()));
 
@@ -172,9 +165,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void setNearestStationMarker()
     {
-        mMap.addMarker(new MarkerOptions()
+        Marker marker = mMap.addMarker (new MarkerOptions()
                 .position(nearestStation.getLatLng())
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.station_icon_large))
                 .title(nearestStation.getNames()[2]));
+
+        marker.setTag(nearestStation);
 
 
     }
@@ -186,9 +182,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         for (Station s : stations)
         {
-            mMap.addMarker(new MarkerOptions()
-                    .position(s.getLatLng())
-                    .title(s.getNames()[2]));
+            if(! s.equals(nearestStation))
+            {
+                Marker marker = mMap.addMarker (new MarkerOptions()
+                        .position(s.getLatLng())
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.station_icon_small))
+                        .title(s.getNames()[2]));
+
+                marker.setTag(s);
+            }
         }
     }
 }
